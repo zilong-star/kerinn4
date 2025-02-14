@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Valentine's Day, Kerin!</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4d1a6; /* Light chocolate */
+            color: #5a3e1b;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .section {
+            display: none;
+            padding: 20px;
+            transition: opacity 1s ease, transform 1s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .visible {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            color: white;
+            background-color: #8b5e3c;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #6b4221;
+        }
+        /* Card Styles */
+        .card {
+            padding: 20px;
+            background: #ffffff;
+            margin: 20px auto;
+            width: 80%;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .card h2 {
+            font-size: 1.8rem;
+            color: #8b5e3c;
+        }
+        .card p {
+            font-size: 1rem;
+            color: #5a3e1b;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Start Button Section -->
+    <div class="section visible" id="start">
+        <button onclick="startExperience()">Ayo mulai 🎉</button>
+    </div>
+
+    <!-- Game Section -->
+    <div class="section" id="game">
+        <h1>Klik "❤️❤️❤️" 5x sambil bilang "zila anak baik hati!" 5x juga, baru bisa lanjut (rada tengil ya si zila)</h1>
+        <button onclick="incrementLove()">❤️❤️❤️</button>
+        <p id="clickCounter">Clicks: 0</p>
+    </div>
+
+    <!-- Header Section -->
+    <div class="section" id="header">
+        <h1>HAPPY VALENTINE'S DAY, KERIN! 🎉</h1>
+        <p>Hope u enjoy this special treat (b aja sih ini masih kureng)</p>
+        <button onclick="nextSection('header', 'card')">Next</button>
+    </div>
+
+    <!-- Greeting Card Section -->
+    <div class="section" id="card">
+        <div class="card">
+            <h2>Dear Kerin,</h2>
+            <p>Wiiii udah sampai sini aja😎</p>
+            <p>Happy Valentine’s Day, Kerin!  
+                
+                It’s kinda funny how our lives always seem to mirror each other in the weirdest ways. Even though we’re not that close (yet?), I still appreciate the random convos and those little moments where everything just clicks. Hope today brings you lots of good vibes, a bit of sweetness, and maybe even a surprise or two. Who knows? Maybe this is just the beginning of a cool friendship. Have an awesome day! ✨💌</p>
+            <p>Maaf ya, harusnya aku ngasih cokelat ga si?</p>
+        </div>
+        <button onclick="nextSection('card', 'message')">Next</button>
+    </div>
+
+    <!-- Message Form Section -->
+    <div class="section" id="message">
+        <div class="message">
+            <h2>Maaf yaa surprisenya gini doang, boleh tinggalin massage buat zila ga?</h2>
+            <form id="messageForm" action="https://formspree.io/f/mbldzrkk" method="POST" onsubmit="handleFormSubmit(event)">
+                <textarea name="message" placeholder="ketik disiniii..." required></textarea>
+                <button type="submit">Send</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Audio Backsound -->
+    <audio id="backsound" loop>
+        <source src="Paul Partohap - VITAMIN U (Lyric Video) copy.mp3" type="audio/mpeg"> <!-- MP3 -->
+        <source src="Paul Partohap - VITAMIN U (Lyric Video) copy.ogg" type="audio/ogg">   <!-- Ogg -->
+        <source src="Paul Partohap - VITAMIN U (Lyric Video) copy.wav" type="audio/wav">   <!-- WAV -->
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        let loveClicks = 0;
+
+        function startExperience() {
+            let audio = document.getElementById("backsound");
+            audio.play(); // Mulai backsound saat tombol ditekan
+            nextSection('start', 'game');
+        }
+
+        function incrementLove() {
+            loveClicks++;
+            document.getElementById('clickCounter').innerText = `Clicks: ${loveClicks}`;
+
+            if (loveClicks === 5) {
+                alert('Gokil! Lanjut ke tahap berikutnya 🎉');
+                triggerConfetti();
+                nextSection('game', 'header');
+            }
+        }
+
+        function nextSection(currentId, nextId) {
+            const currentSection = document.getElementById(currentId);
+            const nextSection = document.getElementById(nextId);
+
+            currentSection.classList.remove('visible');
+            setTimeout(() => {
+                currentSection.style.display = 'none';
+                nextSection.style.display = 'block';
+                setTimeout(() => {
+                    nextSection.classList.add('visible');
+                }, 50);
+            }, 1000);
+        }
+
+        function triggerConfetti() {
+            confetti({
+                particleCount: 150,
+                spread: 100,
+                origin: { y: 0.6 }
+            });
+        }
+
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            alert("Pesan terkirim! Makasih ya 🥰");
+        }
+    </script>
+</body>
+</html>
